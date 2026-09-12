@@ -36,6 +36,8 @@ storage, err := sqlite.New(cfg)
        router := http.NewServeMux()
 	   router.HandleFunc("POST /api/students",student.New(storage))
 	   router.HandleFunc("GET /api/students/{id}",student.GetById(storage))
+
+	   router.HandleFunc("GET /api/students",student.GetList(storage))
 	// setup server 
        server :=  http.Server{
 		Addr: cfg.Addr,
@@ -69,7 +71,7 @@ storage, err := sqlite.New(cfg)
 	 if err != nil {
 		slog.Error("Failed to Shutdown srver", slog.String("error",err.Error()))
 	 }
-     slog.Info("server sgutdoen succesfully")
+     slog.Info("sestoragerver shutdown succesfully")
 	
 
 }

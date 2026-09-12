@@ -89,3 +89,35 @@ func (s *Sqlite) GetStudentbyId(id int64) (types.Student, error){
    return student, nil
 
 }
+
+func (s *Sqlite) GetStudents() ([]types.Student, error){
+	stmt, err := s.Db.Prepare("SELECT id,name,email,age FROM students")
+	if err != nil{
+		return nil,err
+	}
+
+	defer stmt.Close()
+
+	rows, err := stmt.Query()
+
+	if err != nil{
+		return nil,err
+	}
+
+	defer rows.Close()
+
+	var students []types.Student
+
+	for rows.Next(){
+		var student types.Student
+
+     err := rows.Scan(&student.Id, &student.Name, &student.Email, &student.Age)
+
+	 if err != nil{
+		 return nil,err
+	 }
+	 students = append(students, student)
+	}
+	return students, nil
+
+}
